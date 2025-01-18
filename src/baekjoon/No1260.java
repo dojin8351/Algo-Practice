@@ -28,7 +28,32 @@ public class No1260 {
                 dfs(child.data, visited, nodes);
             }
         }
+    }
 
+    static void bfs(int v, boolean[] visited, List<Node> nodes) {
+        // bfs에 사용할 큐
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(nodes.get(v));
+        visited[v] = true;
+        
+        // queue가 비어있지 않다면 계속 반복 하도록 조건 설정
+        while (!queue.isEmpty()) {
+            // 현재의 노드 값에 queue.poll()을 사용해서 현재 queue에 들어있는 제일 앞의 값을 빼서 Node에 넣어준다
+            Node current = queue.poll();
+            System.out.print(current.data + " ");
+
+            // 위에서 넣어준 node의 자식 노드들을 탐색
+            List<Node> children = new ArrayList<>(current.children);
+            children.sort(Comparator.comparingInt(n -> n.data));
+
+            // 자식 노드들 중 visited가 false라면 queue에 child의 data를 추가하고 visited 를 true로 변경
+            for (Node child : children) {
+                if (!visited[child.data]) {
+                    queue.add(child);
+                    visited[child.data] = true;
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -61,21 +86,26 @@ public class No1260 {
         boolean[] visited = new boolean[N + 1];
 
         dfs(V, visited, nodes);
+        System.out.println();
+        
+        // dfs 를 수행하면서 이미 위의 visited 의 배열이 수정이 되었으므로 다시 초기화해준다
+        visited = new boolean[N + 1];
+        bfs(V, visited, nodes);
+    }
 
+    /*
+        Node 클래스 정의
+        여러 자식 노드의 관계를 구성 할 수 있게 children 연결관계를 저장하는 리스트 가짐
+     */
+    static class Node {
+        int data; // 정점 번호
+        List<Node> children; // 자식들이 저장되는 리스트
+
+        public Node(int data) {
+            this.data = data;
+            children = new ArrayList<>();
+        }
     }
 }
 
-/*
-    Node 클래스 정의
-    여러 자식 노드의 관계를 구성 할 수 있게 children 연결관계를 저장하는 리스트 가짐
- */
-class Node {
-    int data; // 정점 번호
-    List<Node> children; // 자식들이 저장되는 리스트
-
-    public Node(int data) {
-        this.data = data;
-        children = new ArrayList<>();
-    }
-}
 
