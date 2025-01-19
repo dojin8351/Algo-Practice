@@ -16,14 +16,14 @@ public class No1260 {
         System.out.print(v + " ");
 
         // 해당 노드에 연결된 자식 노드들을 방문
-        List<Node> childrens = new ArrayList<>(nodes.get(v).children);
+        List<Node> children = new ArrayList<>(nodes.get(v).children);
         
         // n.data 기준으로 오름차순 정렬
-        childrens.sort(Comparator.comparingInt(n -> n.data));
+        children.sort(Comparator.comparingInt(n -> n.data));
 
         // 정렬된 자식 노드들을 순차적으로 확인
         // 방문하지 않은 노드만 재귀적으로 방문
-        for (Node child : childrens) {
+        for (Node child : children) {
             if (!visited[child.data]) {
                 dfs(child.data, visited, nodes);
             }
