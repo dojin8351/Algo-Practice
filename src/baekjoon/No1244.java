@@ -1,5 +1,7 @@
 package baekjoon;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class No1244 {
@@ -12,40 +14,47 @@ public class No1244 {
         Scanner sc = new Scanner(System.in);
         int size = sc.nextInt();
 
-        Integer[] switches = new Integer[size+1];
-        switches[0] = null;
+        Map<Integer,Integer> switches = new HashMap<>();
         for(int i = 1; i <= size; i++) {
-            int a = sc.nextInt();
-            switches[i] = a;
+            switches.put(i, sc.nextInt());
         }
 
-        int students = sc.nextInt();
-        for(int i = 0; i < students; i++) {
+        int studentCnt = sc.nextInt();
+        for(int i = 0; i < studentCnt; i++) {
             int gender = sc.nextInt();
             int switchNum = sc.nextInt();
 
-            if (gender == 1) {
-                for(int j = 1; j <= switches.length; j++) {
-                    if(j % switchNum == 0) {
-                        if(switches[j] == 1) {
-                            switches[j] = 0;
-                        } else if (switches[j] == 0) {
-                            switches[j] = 1;
-                        } else if(switches[j] == null) {
-                            continue;
+            if(gender == 1) {
+                for(Integer key : switches.keySet()) {
+                    if(key % switchNum == 0) {
+                        if(switches.get(key) == 1) {
+                            switches.replace(key, 0);
+                        }else {
+                            switches.replace(key, 1);
                         }
                     }
                 }
             } else {
-                for(int j = 1; j <= switches.length; j++) {
-                    if(switches[switchNum - j].equals(switches[switchNum + j])) {
-
+                for(int j = switchNum, k = switchNum; j <= switches.size() && k >= 0 ; j++, k--) {
+                    if(switches.get(j).equals(switches.get(k))) {
+                        if(switches.get(j) == 1 && switches.get(k) == 1) {
+                            switches.replace(j, 0);
+                            switches.replace(k, 0);
+                        } else {
+                            switches.replace(j, 1);
+                            switches.replace(k, 1);
+                        }
                     }else {
                         break;
                     }
                 }
             }
-
+        }
+        for(Integer key : switches.keySet()) {
+            System.out.print(switches.get(key) + " ");
+            if(key % 20 == 0) {
+                System.out.println();
+            }
         }
     }
 }
