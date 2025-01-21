@@ -25,26 +25,16 @@ public class No1244 {
             int switchNum = sc.nextInt();
 
             if(gender == 1) {
-                for(Integer key : switches.keySet()) {
-                    if(key % switchNum == 0) {
-                        if(switches.get(key) == 1) {
-                            switches.replace(key, 0);
-                        }else {
-                            switches.replace(key, 1);
-                        }
-                    }
+                for (int key = switchNum; key <= size; key += switchNum) {
+                    switches.replace(key, 1 - switches.get(key));
                 }
             } else {
-                for(int j = switchNum, k = switchNum; j <= switches.size() && k >= 0 ; j++, k--) {
-                    if(switches.get(j).equals(switches.get(k))) {
-                        if(switches.get(j) == 1 && switches.get(k) == 1) {
-                            switches.replace(j, 0);
-                            switches.replace(k, 0);
-                        } else {
-                            switches.replace(j, 1);
-                            switches.replace(k, 1);
-                        }
-                    }else {
+                switches.replace(switchNum, 1 - switches.get(switchNum));
+                for (int j = 1; switchNum - j > 0 && switchNum + j <= size; j++) {
+                    if (switches.get(switchNum - j).equals(switches.get(switchNum + j))) {
+                        switches.replace(switchNum - j, 1 - switches.get(switchNum - j));
+                        switches.replace(switchNum + j, 1 - switches.get(switchNum + j));
+                    } else {
                         break;
                     }
                 }
