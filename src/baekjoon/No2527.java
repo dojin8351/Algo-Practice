@@ -20,9 +20,9 @@ public class No2527 {
             if(x2 < x3 || y2 < y3 || x1 > x4 || y1 > y4) {
                 System.out.println("d");
             } else if((x2 == x3 && y2 == y3) || (x1 == x4 && y1 == y4) ||
-                 (x2 == x4 && y2 == y4) || (x1 == x3 && y1 == y3)) {
+                 (x2 == x3 && y1 == y4) || (x1 == x4 && y2 == y3)) {
                 System.out.println("c");
-            } else if(x2 == x3 || x1 == x4 || y2 == y3 || y1 == y4 ) {
+            } else if (x2 == x3 || x1 == x4 || y1 == y4 || y2 == y3) {
                 System.out.println("b");
             } else {
                 System.out.println("a");
