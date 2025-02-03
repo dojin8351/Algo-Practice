@@ -20,6 +20,7 @@ public class No13300 {
             studentCountManager.addStudent(S, Y);
         }
         int totalRoomCount = 0;
+
         for(String key : studentCountManager.studentCount.keySet()) {
             int gender = Integer.parseInt(key.split("_")[0]);
             int grade = Integer.parseInt(key.split("_")[1]);
