@@ -29,7 +29,7 @@ public class SecondTryNo14940 {
             String[] row = br.readLine().split(" ");
             for (int j = 0; j < m; j++) {
                 input[i][j] = Integer.parseInt(row[j]);
-                // 초기 거리를 -1로 설정 순회 할때 0은 순회 못하도록 설정하면 순회안한곳은 자동으로 -1되도록 설정
+                // 초기 result의 값을 -1로 세팅해 놓음으로서 방문 했는지 안했는지 구분 지을수 있게된다.
                 result[i][j] = -1;
                 if (input[i][j] == 2) {
                     startRow = i;
@@ -70,6 +70,7 @@ public class SecondTryNo14940 {
                 // 배열 범위 내에 있어야 하고, 아직 방문하지 않았으며, 값이 1인 지점만 순회
                 if (nextRow >= 0 && nextCol >= 0 && nextRow < input.length && nextCol < input[0].length
                         && result[nextRow][nextCol] == -1 && input[nextRow][nextCol] == 1) {
+                    // 값을 넣어줌으로써 방문을 했다는게 됨 방문을 안한곳은 여전히 -1
                     result[nextRow][nextCol] = result[row][col] + 1; // 이전 거리 + 1
 
                     //탐색을 끝마쳤다면 이제 다음 순회할 곳의 행,열의 죄표를 담아 que에 추가
