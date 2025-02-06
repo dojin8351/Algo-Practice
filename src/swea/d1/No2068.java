@@ -18,6 +18,5 @@ public class No2068 {
 			}
 			System.out.printf("#%d %d\n", i+1, maxNum);
 		}
-	
 	}
 }
