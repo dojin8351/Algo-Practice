@@ -33,11 +33,11 @@ public class No1926_BFS그림 {
         System.out.println(size);
     }
 
-    public static int bfs(int[][] map, int h, int w) {
+    public static int bfs(int[][] arr, int h, int w) {
         int size = 0;
         Queue<int[]> queue = new LinkedList<>();
         queue.offer(new int[]{h, w});
-        map[h][w] = 0; // 시작점 방문 처리
+        arr[h][w] = 0; // 시작점 방문 처리
 
         while (!queue.isEmpty()) {
             int[] point = queue.poll();
@@ -49,9 +49,9 @@ public class No1926_BFS그림 {
                 int nx = x + direction[0];
                 int ny = y + direction[1];
 
-                if (nx >= 0 && nx < map.length && ny >= 0 && ny < map[0].length && map[nx][ny] == 1) {
+                if (nx >= 0 && nx < arr.length && ny >= 0 && ny < arr[0].length && arr[nx][ny] == 1) {
                     queue.offer(new int[]{nx, ny});
-                    map[nx][ny] = 0;
+                    arr[nx][ny] = 0;
                 }
             }
         }
