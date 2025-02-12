@@ -1,46 +1,58 @@
 package baekjoon.binarySearch;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class No10816_숫자카드2 {
-    static int[] targetCards;
-    static int[] checkCards;
+    static int[] cards;
+
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int[] cards = new int[N];
-        for(int i = 0; i < N; i++){
-            cards[i] = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+
+        int N = Integer.parseInt(br.readLine());
+        cards = new int[N];
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            cards[i] = Integer.parseInt(st.nextToken());
         }
 
-        int M = sc.nextInt();
-        targetCards = new int[M];
-        checkCards = new int[M];
-        for(int i = 0; i < M; i++){
-            targetCards[i] = sc.nextInt();
-        }
-        Arrays.sort(targetCards);
+        int M = Integer.parseInt(br.readLine());
+        int[] targets = new int[M];
 
-        for(int i = 0; i < cards.length; i++){
-            binarySearch(targetCards, cards[i]);
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i++) {
+            targets[i] = Integer.parseInt(st.nextToken());
         }
+
+        Arrays.sort(cards);
+
+        for (int target : targets) {
+            int count = upperBound(target) - lowerBound(target);
+            sb.append(count).append(" ");
+        }
+
+        System.out.println(sb);
     }
 
-    public static void binarySearch(int[] targetCards, int card) {
-        int left = 0;
-        int right = targetCards.length - 1;
-
-        while(left <= right) {
+    public static int lowerBound(int target) {
+        int left = 0, right = cards.length;
+        while (left < right) {
             int mid = (left + right) / 2;
-            if(targetCards[mid] == card) {
-                return;
-            }else if(targetCards[mid] < card) {
-                left = mid + 1;
-            }else {
-                right = mid - 1;
-            }
+            if (cards[mid] >= target) right = mid;
+            else left = mid + 1;
         }
+        return left;
+    }
+
+    public static int upperBound(int target) {
+        int left = 0, right = cards.length;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (cards[mid] > target) right = mid;
+            else left = mid + 1;
+        }
+        return left;
     }
 }
+
