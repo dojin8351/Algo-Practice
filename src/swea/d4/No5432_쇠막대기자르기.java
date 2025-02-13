@@ -33,7 +33,6 @@ public class No5432_쇠막대기자르기 {
                     }
                 }
             }
-
             System.out.println("#" + test + " " + sum);
         }
 
