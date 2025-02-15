@@ -27,6 +27,7 @@ public class 좌물쇠 {
             // 전체 회전 (N번 회전)
             for (int i = 0; i < N; i++) {
                 StringBuilder sb = new StringBuilder();
+                // deque에 담아놓은 요소들을 뽑아주기 위한 도구
                 Iterator<Character> iter = deque.iterator();
                 int idx = 0;
 
@@ -39,25 +40,20 @@ public class 좌물쇠 {
                         sb.setLength(0);
                     }
                 }
-
-                // 한 칸 회전: 맨 뒤에서 빼서 앞으로 삽입
+                //맨 뒤에서 빼서 앞으로 삽입
                 deque.offerFirst(deque.pollLast());
             }
 
-            // 16진수를 10진수로 변환 및 정렬
             List<Long> numbers = new ArrayList<>();
             for (String hex : set) {
-                numbers.add(Long.parseLong(hex, 16)); // 16진수 → 10진수 변환
+                // 16진수 -> 10진수
+                numbers.add(Long.parseLong(hex, 16));
             }
-            numbers.sort(Collections.reverseOrder()); // 내림차순 정렬
+            // 정렬해준다.
+            numbers.sort(Collections.reverseOrder());
 
             // K값 유효성 검증 후 출력
-            if (K > 0 && K <= numbers.size()) {
-                System.out.println("#" + test + " " + numbers.get(K - 1));
-            } else {
-                System.out.println("Invalid K value");
-            }
+            System.out.println("#" + test + " " + numbers.get(K - 1));
         }
-        sc.close(); // Scanner 닫기
     }
 }
