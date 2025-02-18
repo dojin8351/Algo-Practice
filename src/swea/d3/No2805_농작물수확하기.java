@@ -14,9 +14,7 @@ public class No2805_농작물수확하기 {
 
             for (int j = 0; j < n; j++) {
                 String input = sc.next();
-                for (int k = 0; k < n; k++) {
-                    farm[j][k] = input.charAt(k) - '0';
-                }
+                farm[j] = Arrays.stream(input.split("")).mapToInt(Integer::parseInt).toArray();
             }
 
             int total = 0;
