@@ -1,5 +1,7 @@
 package baekjoon;
 
+import com.sun.source.tree.Tree;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,14 +38,62 @@ public class No1389_케빈베이컨 {
             friendRelationship[friendB].add(friendA);
         }
 
+        int min = Integer.MAX_VALUE;
+        Map<Integer, Integer> map = new TreeMap<>();
+        for(int i = 1; i < friendRelationship.length; i++) {
+            int relationShip = 0;
+            for(int j = 1; j < friendRelationship.length; j++) {
+
+                if(j == i) {
+                    continue;
+                }
+
+                relationShip += bfs(i,j);
+            }
+            if(map.containsKey(relationShip)) {
+                continue;
+            }
+            map.put(relationShip,i);
+        }
+
+        System.out.println(map.get(map.keySet().stream().min(Integer :: compareTo).get()));
+
     }
 
-    public static int bfs(int friend) {
-        int relationShip = 0;
-        boolean[] visited = new boolean[N+1];
-        Queue<List<Integer>> queue = new LinkedList<>();
+    public static int bfs(int oneself, int target) {
+        // BFS를 위한 큐와 방문 체크 배열 초기화
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[friendRelationship.length];
 
+        // 초기 상태: 시작 노드 추가 및 방문 처리
+        queue.offer(oneself);
+        visited[oneself] = true;
 
-        return 0;
+        int relationShip = 0; // 단계별 관계 거리
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            // 현재 큐의 사이즈만큼 반복 (현재 단계에서 탐색할 노드들)
+            for (int i = 0; i < size; i++) {
+                int current = queue.poll();
+
+                // 타겟을 찾으면 현재 관계 거리 반환
+                if (current == target) {
+                    return relationShip;
+                }
+
+                // 현재 노드의 친구들을 큐에 추가
+                for (int friend : friendRelationship[current]) {
+                    if (!visited[friend]) {
+                        queue.offer(friend);
+                        visited[friend] = true;
+                    }
+                }
+            }
+
+            relationShip++;
+        }
+        return -1;
     }
 }
