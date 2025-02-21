@@ -1,6 +1,4 @@
-package baekjoon;
-
-import com.sun.source.tree.Tree;
+package baekjoon.No1389_케빈베이컨;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +35,6 @@ public class No1389_케빈베이컨 {
             friendRelationship[friendA].add(friendB);
             friendRelationship[friendB].add(friendA);
         }
-
         int min = Integer.MAX_VALUE;
         Map<Integer, Integer> map = new TreeMap<>();
         for(int i = 1; i < friendRelationship.length; i++) {

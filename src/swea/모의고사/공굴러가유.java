@@ -59,26 +59,23 @@ public class 공굴러가유 {
 
     // 주어진 위치에서 최소값이 되는 노드 리스트 탐색
     static int[] searchMin(int y, int x) {
-        Map<Integer, int[]> nodes = new TreeMap<>();
+        int minValue = Integer.MAX_VALUE; // 최소값 추적
+        int[] minNode = null; // 최소값의 좌표 추적
 
         for (int dir = 0; dir < dirX.length; dir++) {
             int nextY = y + dirY[dir];
             int nextX = x + dirX[dir];
 
-            // boards범위 내에 존재하면서 더 낮다 라는 조건을 충족한다면 map에 추가해준다.
+            // boards 범위 내에 존재하면서 더 낮다 라는 조건을 충족한다면 최소값 갱신
             if (nextY >= 0 && nextX >= 0 && nextY < boards.length && nextX < boards.length) {
-                if (boards[y][x] > boards[nextY][nextX]) {
-                    int[] node = {nextY, nextX};
-                    nodes.put(boards[nextY][nextX], node);
+                if (boards[y][x] > boards[nextY][nextX] && boards[nextY][nextX] < minValue) {
+                    minValue = boards[nextY][nextX];
+                    minNode = new int[]{nextY, nextX};
                 }
             }
         }
 
-        if (nodes.isEmpty()) {
-            return null;
-        }
-
-        // map에 추가된 여러가지의 키값중 가장 작은 값을 가지고 int[] 인 value를 뽑아 반환해준다.
-        return nodes.get(nodes.keySet().stream().min(Integer::compareTo).get());
+        // 최소값 위치를 반환, 없으면 null 반환
+        return minNode;
     }
 }
