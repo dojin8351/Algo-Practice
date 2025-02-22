@@ -1,4 +1,4 @@
-package baekjoon.No1389_케빈베이컨;
+package baekjoon.bfs.No1389_케빈베이컨;
 
 import java.io.BufferedReader;
 import java.io.IOException;
