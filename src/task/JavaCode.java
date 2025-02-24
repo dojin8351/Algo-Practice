@@ -1,12 +1,13 @@
 package task;
 
 import java.net.*;
+import java.util.Arrays;
 import java.io.*;
 
 public class JavaCode {
 
     // 닉네임을 사용자에 맞게 변경해 주세요.
-    static final String NICKNAME = "자바플레이어";
+    static final String NICKNAME = "A0009_1348506";
 
     // 일타싸피 프로그램을 로컬에서 실행할 경우 변경하지 않습니다.
     static final String HOST = "127.0.0.1";
@@ -106,72 +107,195 @@ public class JavaCode {
 
 
 
+                /*
+                 *  당구대에 목적구가 2개 이상이 있을 경우를 고려하여 포켓에 넣어야 할 공을 담는 배열을 만든다.
+                 *  당구대에 공이 없다면 x, y좌표가 -1로 뜨므로 공이 -1이 아니라면 true, 없다면 false로 배열에 추가해준다.
+                 *  게임에서 stage4부터 목적구가 1, 3 / stage5~6은 1, 3, 8이므로 목적구를 고려하여 목적구와 흰 공의 X좌표 간의 거리, Y좌표 간의 거리를 계산한다.
+                 *  기본 코드의 angle에서 목적구가 흰 공을 중심으로 2사분면에 위치했을 때 각도를 재계산하는 코드를 넣어주었으며
+                 *  만약 power가 50보다 낮다면 가장 큰 값인 100으로 설정해주어
+                 *  stage6까지 게임을 진행해주도록 하였다.
+                 */
 
 
+                // 포켓에 넣어야 할 공을 담는 배열
+                Boolean[] myBalls = new Boolean[balls.length];
 
-                // whiteBall_x, whiteBall_y: 흰 공의 X, Y좌표를 나타내기 위해 사용한 변수
-                float whiteBall_x = balls[0][0];
-                float whiteBall_y = balls[0][1];
-
-                // targetBall_x, targetBall_y: 목적구의 X, Y좌표를 나타내기 위해 사용한 변수
-                float targetBall_x = balls[1][0];
-                float targetBall_y = balls[1][1];
-
-                // width, height: 목적구와 흰 공의 X좌표 간의 거리, Y좌표 간의 거리
-                float width = Math.abs(targetBall_x - whiteBall_x);
-                float height = Math.abs(targetBall_y - whiteBall_y);
-
-                // radian: width와 height를 두 변으로 하는 직각삼각형의 각도를 구한 결과
-                //   - 1radian = 180 / PI (도)
-                //   - 1도 = PI / 180 (radian)
-                // angle : 아크탄젠트로 얻은 각도 radian을 degree로 환산한 결과
-                double radian = height > 0? Math.atan(width / height): 0;
-                angle = (float) ((180.0 / Math.PI) * radian);
-
-                // 목적구가 상하좌우로 일직선상에 위치했을 때 각도 입력
-                if (whiteBall_x == targetBall_x)
-                {
-                    if (whiteBall_y < targetBall_y)
-                    {
-                        angle = 0;
-                    }
-                    else
-                    {
-                        angle = 180;
-                    }
-                }
-                else if (whiteBall_y ==targetBall_y)
-                {
-                    if (whiteBall_x < targetBall_x)
-                    {
-                        angle = 90;
-                    }
-                    else
-                    {
-                        angle = 270;
+                // 당구대에 공이 있는지 확인
+                for (int i = 0; i < balls.length; i++) {
+                    if (balls[i][0] != -1.0 && balls[i][1] != -1.0) {
+                        myBalls[i] = true;
+                    } else {
+                        myBalls[i] = false;
                     }
                 }
 
-                // 목적구가 흰 공을 중심으로 3사분면에 위치했을 때 각도를 재계산
-                if (whiteBall_x > targetBall_x && whiteBall_y > targetBall_y)
-                {
-                    radian = Math.atan(width / height);
-                    angle = (float) (((180.0 / Math.PI) * radian) + 180);
+                // 목적구가 1, 3 5일 때 당구대에 있으면
+                for (int i = 1; i < myBalls.length; i++) {
+                    if (i == 1 || i == 3 || i == 5) {
+                        if (myBalls[i] == true) {
+                            // whiteBall_x, whiteBall_y: 흰 공의 X, Y좌표를 나타내기 위해 사용한 변수
+                            float whiteBall_x = balls[0][0];
+                            float whiteBall_y = balls[0][1];
+
+                            // targetBall_x, targetBall_y: 목적구의 X, Y좌표를 나타내기 위해 사용한 변수
+                            float targetBall_x = balls[i][0];
+                            float targetBall_y = balls[i][1];
+
+                            // width, height: 목적구와 흰 공의 X좌표 간의 거리, Y좌표 간의 거리
+                            float width = Math.abs(targetBall_x - whiteBall_x);
+                            float height = Math.abs(targetBall_y - whiteBall_y);
+
+                            // radian: width와 height를 두 변으로 하는 직각삼각형의 각도를 구한 결과
+                            //   - 1radian = 180 / PI (도)
+                            //   - 1도 = PI / 180 (radian)
+                            // angle : 아크탄젠트로 얻은 각도 radian을 degree로 환산한 결과
+                            double radian = height > 0? Math.atan(width / height): 0;
+                            angle = (float) ((180.0 / Math.PI) * radian);
+
+                            // 목적구가 상하좌우로 일직선상에 위치했을 때 각도 입력
+                            if (whiteBall_x == targetBall_x)
+                            {
+                                if (whiteBall_y < targetBall_y)
+                                {
+                                    angle = 0;
+                                }
+                                else
+                                {
+                                    angle = 180;
+                                }
+                            }
+                            else if (whiteBall_y ==targetBall_y)
+                            {
+                                if (whiteBall_x < targetBall_x)
+                                {
+                                    angle = 90;
+                                }
+                                else
+                                {
+                                    angle = 270;
+                                }
+                            }
+
+                            // 목적구가 흰 공을 중심으로 3사분면에 위치했을 때 각도를 재계산
+                            if (whiteBall_x > targetBall_x && whiteBall_y > targetBall_y)
+                            {
+                                radian = Math.atan(width / height);
+                                angle = (float) (((180.0 / Math.PI) * radian) + 180);
+                            }
+
+                            // 목적구가 흰 공을 중심으로 4사분면에 위치했을 때 각도를 재계산
+                            else if (whiteBall_x < targetBall_x && whiteBall_y > targetBall_y)
+                            {
+                                radian = Math.atan(height / width);
+                                angle = (float) (((180.0 / Math.PI) * radian) + 90);
+                            }
+
+                            // 목적구가 흰 공을 중심으로 2사분면에 위치했을 때 각도를 재계산
+                            else if (whiteBall_x > targetBall_x && whiteBall_y < targetBall_y)
+                            {
+                                radian = Math.atan(height / width);
+                                angle = (float) (((180.0 / Math.PI) * radian) + 270);
+                            }
+
+
+
+                            // distance: 두 점(좌표) 사이의 거리를 계산
+                            double distance = Math.sqrt((width * width) + (height * height));
+
+                            // power: 거리 distance에 따른 힘의 세기를 계산
+                            // 만약 power가 50보다 낮다면 가장 큰 값인 100으로 설정
+                            power = (float) distance;
+                            if (power <= 50) {
+                                power = 100;
+                            }
+
+                            // 공을 한번 치면 break
+                            break;
+                        }
+                    }else {
+                        if (myBalls[i]) {
+                            // whiteBall_x, whiteBall_y: 흰 공의 X, Y좌표를 나타내기 위해 사용한 변수
+                            float whiteBall_x = balls[0][0];
+                            float whiteBall_y = balls[0][1];
+
+                            // targetBall_x, targetBall_y: 목적구의 X, Y좌표를 나타내기 위해 사용한 변수
+                            float targetBall_x = balls[i][0];
+                            float targetBall_y = balls[i][1];
+
+                            // width, height: 목적구와 흰 공의 X좌표 간의 거리, Y좌표 간의 거리
+                            float width = Math.abs(targetBall_x - whiteBall_x);
+                            float height = Math.abs(targetBall_y - whiteBall_y);
+
+                            // radian: width와 height를 두 변으로 하는 직각삼각형의 각도를 구한 결과
+                            //   - 1radian = 180 / PI (도)
+                            //   - 1도 = PI / 180 (radian)
+                            // angle : 아크탄젠트로 얻은 각도 radian을 degree로 환산한 결과
+                            double radian = height > 0? Math.atan(width / height): 0;
+                            angle = (float) ((180.0 / Math.PI) * radian);
+
+                            // 목적구가 상하좌우로 일직선상에 위치했을 때 각도 입력
+                            if (whiteBall_x == targetBall_x)
+                            {
+                                if (whiteBall_y < targetBall_y)
+                                {
+                                    angle = 0;
+                                }
+                                else
+                                {
+                                    angle = 180;
+                                }
+                            }
+                            else if (whiteBall_y ==targetBall_y)
+                            {
+                                if (whiteBall_x < targetBall_x)
+                                {
+                                    angle = 90;
+                                }
+                                else
+                                {
+                                    angle = 270;
+                                }
+                            }
+
+                            // 목적구가 흰 공을 중심으로 3사분면에 위치했을 때 각도를 재계산
+                            if (whiteBall_x > targetBall_x && whiteBall_y > targetBall_y)
+                            {
+                                radian = Math.atan(width / height);
+                                angle = (float) (((180.0 / Math.PI) * radian) + 180);
+                            }
+
+                            // 목적구가 흰 공을 중심으로 4사분면에 위치했을 때 각도를 재계산
+                            else if (whiteBall_x < targetBall_x && whiteBall_y > targetBall_y)
+                            {
+                                radian = Math.atan(height / width);
+                                angle = (float) (((180.0 / Math.PI) * radian) + 90);
+                            }
+
+                            // 목적구가 흰 공을 중심으로 2사분면에 위치했을 때 각도를 재계산
+                            else if (whiteBall_x > targetBall_x && whiteBall_y < targetBall_y)
+                            {
+                                radian = Math.atan(height / width);
+                                angle = (float) (((180.0 / Math.PI) * radian) + 270);
+                            }
+
+
+
+                            // distance: 두 점(좌표) 사이의 거리를 계산
+                            double distance = Math.sqrt((width * width) + (height * height));
+
+                            // power: 거리 distance에 따른 힘의 세기를 계산
+                            // 만약 power가 50보다 낮다면 가장 큰 값인 100으로 설정
+                            power = (float) distance;
+                            if (power <= 50) {
+                                power = 100;
+                            }
+
+                            // 공을 한번 치면 break
+                            break;
+                        }
+                    }
+
                 }
-
-                // 목적구가 흰 공을 중심으로 4사분면에 위치했을 때 각도를 재계산
-                else if (whiteBall_x < targetBall_x && whiteBall_y > targetBall_y)
-                {
-                    radian = Math.atan(height / width);
-                    angle = (float) (((180.0 / Math.PI) * radian) + 90);
-                }
-
-                // distance: 두 점(좌표) 사이의 거리를 계산
-                double distance = Math.sqrt((width * width) + (height * height));
-
-                // power: 거리 distance에 따른 힘의 세기를 계산
-                power = (float) distance;
-
 
 
 
