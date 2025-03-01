@@ -1,7 +1,6 @@
-package task;
+package test;
 
 import java.net.*;
-import java.util.Arrays;
 import java.io.*;
 
 public class JavaCode {

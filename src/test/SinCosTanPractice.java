@@ -1,7 +1,5 @@
-package task;
+package test;
 
-import java.util.*;
-import java.io.*;
 //public class SinCosTanPractice {
 //    public static void Main(String[] args) {
 //        int[] myball = {1,2};
