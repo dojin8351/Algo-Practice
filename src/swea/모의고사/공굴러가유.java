@@ -25,30 +25,10 @@ public class 공굴러가유 {
 
             int max = Integer.MIN_VALUE;
 
-            // 각 위치에서 탐색 시작
-            for (int i = 0; i < boards.length; i++) {
-                for (int j = 0; j < boards.length; j++) {
-                    int y = i;
-                    int x = j;
-                    int length = 1;
-
-                    while (true) {
-                        // 현재 위치에서 최소 값을 찾는다
-                        int[] node = searchMin(y, x);
-
-                        if (node == null) {
-                            break;
-                        }
-
-                        // 다음 위치를 최소값 위치로 갱신
-                        y = node[0];
-                        x = node[1];
-
-                        length++; // 이동한 경로 길이 증가
-                    }
-
-                    // 최대 길이 갱신
-                    max = Math.max(max, length);
+            // BFS 탐색 시작
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    max = Math.max(max, bfs(i, j, N));
                 }
             }
 
@@ -57,25 +37,46 @@ public class 공굴러가유 {
         }
     }
 
-    // 주어진 위치에서 최소값이 되는 노드 리스트 탐색
-    static int[] searchMin(int y, int x) {
-        int minValue = Integer.MAX_VALUE; // 최소값 추적
-        int[] minNode = null; // 최소값의 좌표 추적
+    // BFS를 통한 탐색
+    static int bfs(int startY, int startX, int N) {
+        Queue<int[]> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[N][N];
+        queue.offer(new int[]{startY, startX, 1}); // {y, x, length}
+        visited[startY][startX] = true;
+        int maxLength = 1;
 
-        for (int dir = 0; dir < dirX.length; dir++) {
-            int nextY = y + dirY[dir];
-            int nextX = x + dirX[dir];
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int y = current[0];
+            int x = current[1];
+            int length = current[2];
 
-            // boards 범위 내에 존재하면서 더 낮다 라는 조건을 충족한다면 최소값 갱신
-            if (nextY >= 0 && nextX >= 0 && nextY < boards.length && nextX < boards.length) {
-                if (boards[y][x] > boards[nextY][nextX] && boards[nextY][nextX] < minValue) {
-                    minValue = boards[nextY][nextX];
-                    minNode = new int[]{nextY, nextX};
+            // 최대 길이 갱신
+            maxLength = Math.max(maxLength, length);
+
+            // 4방향 탐색 중 가장 작은 값을 가진 위치 찾기
+            int minValue = Integer.MAX_VALUE;
+            int[] minPoint = null; // 가장 작은 값을 가지는 포인트 저장
+            for (int dir = 0; dir < 4; dir++) {
+                int nextY = y + dirY[dir];
+                int nextX = x + dirX[dir];
+
+                // 보드 범위 체크 및 방문 여부 체크
+                if (nextY >= 0 && nextX >= 0 && nextY < N && nextX < N && !visited[nextY][nextX]) {
+                    // 현재 칸의 값보다 작은 값 중 최솟값 확인
+                    if (boards[y][x] > boards[nextY][nextX] && boards[nextY][nextX] < minValue) {
+                        minValue = boards[nextY][nextX];
+                        minPoint = new int[]{nextY, nextX};
+                    }
                 }
             }
-        }
 
-        // 최소값 위치를 반환, 없으면 null 반환
-        return minNode;
+            // 가장 작은 값을 가진 포인트를 큐에 추가
+            if (minPoint != null) {
+                queue.offer(new int[]{minPoint[0], minPoint[1], length + 1});
+                visited[minPoint[0]][minPoint[1]] = true; // 방문 표시
+            }
+        }
+        return maxLength;
     }
 }
