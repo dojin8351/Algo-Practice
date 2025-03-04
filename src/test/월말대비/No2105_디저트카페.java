@@ -31,7 +31,9 @@ public class No2105_디저트카페 {
                 for (int j = 0; j < boardsSize; j++) {
                     // 새로운 탐색 시작
                     visited[i][j] = true; // 시작점을 방문 처리
-                    dfs(i, j, i, j, 0, 1, new HashSet<>(Set.of(boards[i][j])));
+                    Set<Integer> initialSet = new HashSet<>();
+                    initialSet.add(boards[i][j]); // 첫 번째 디저트 추가
+                    dfs(i, j, i, j, 0, 1, initialSet);
                     visited[i][j] = false; // 탐색 끝난 후 해제
                 }
             }
@@ -47,23 +49,20 @@ public class No2105_디저트카페 {
             int nextY = curY + dirY[i];
             int nextX = curX + dirX[i];
 
-            // 1. 범위와 방문 체크
             if (nextY >= 0 && nextX >= 0 && nextY < boards.length && nextX < boards.length) {
-                // 2. 시작점으로 돌아온 경우 (사각형 완성)
+                // 시작점으로 돌아온 경우 (사각형 완성)
                 if (nextY == startY && nextX == startX && count >= 4) {
                     max = Math.max(max, count);
                     continue;
                 }
 
-                // 3. 방문하지 않았고, 새 디저트라면 탐색 진행
+                // 방문하지 않았고, 새 디저트라면 탐색 진행
                 if (!visited[nextY][nextX] && !eatDessert.contains(boards[nextY][nextX])) {
                     visited[nextY][nextX] = true;
                     eatDessert.add(boards[nextY][nextX]);
 
-                    // DFS 탐색
                     dfs(startY, startX, nextY, nextX, i, count + 1, eatDessert);
 
-                    // 백트래킹
                     visited[nextY][nextX] = false;
                     eatDessert.remove(boards[nextY][nextX]);
                 }
