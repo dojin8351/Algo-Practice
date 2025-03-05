@@ -10,31 +10,27 @@ public class 요리사 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int testCase = sc.nextInt(); // 테스트 케이스 수
+        int testCase = sc.nextInt();
         for (int test = 1; test <= testCase; test++) {
-            int size = sc.nextInt(); // 재료 개수
+            int size = sc.nextInt();
             boards = new int[size][size];
             List<List<Integer>> result = new ArrayList<>();
 
-            // 시너지 테이블 입력
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     boards[i][j] = sc.nextInt();
                 }
             }
 
-            // 재료 인덱스를 담은 배열
             int[] arr = new int[size];
             for (int i = 0; i < arr.length; i++) {
                 arr[i] = i;
             }
 
-            // 팀 조합 생성
             combine(arr, size / 2, 0, result, new ArrayList<>());
 
             int min = Integer.MAX_VALUE;
 
-            // 각 조합별로 탐색
             for (List<Integer> list : result) {
                 List<Integer> anotherList = new ArrayList<>();
                 for (int value : arr) {
