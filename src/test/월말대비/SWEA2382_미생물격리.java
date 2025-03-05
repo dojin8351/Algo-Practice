@@ -1,4 +1,4 @@
-package test;
+package test.월말대비;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SWEA2382_미생물격리 {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
