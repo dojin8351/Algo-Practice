@@ -1,6 +1,9 @@
 package study;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class 조합02_반복재귀 {
@@ -13,15 +16,14 @@ public class 조합02_반복재귀 {
         List<List<Character>> result = new ArrayList<>();
 
         // 재귀 호출 시작
-        duplicateCombination(items, R, 0, new ArrayList<>(), result);
-
+        allSubsets(items,0, new ArrayList<>(), result);
+        result.sort(Comparator.comparing(List :: size));
         // 결과 출력
         for (List<Character> combination : result) {
             System.out.println(combination);
         }
     }
 
-    // 조합 생성 메서드
     public static void combine(char[] items, int R, int idx, List<Character> current, List<List<Character>> result) {
         // 종료 조건: R개의 조합 완성
         if (current.size() == R) {
@@ -54,6 +56,25 @@ public class 조합02_반복재귀 {
             current.add(items[i]); // 현재 원소 선택
             duplicateCombination(items, R, i, current, result); // **i를 그대로 사용**
             current.remove(current.size() - 1); // 백트래킹
+        }
+    }
+    
+    // 사이즈를 지정하지않고 유동적으로 사이즈를 조건대로 생성
+    public static void allSubsets(char[] items, int idx, List<Character> current, List<List<Character>> result) {
+        // 현재 조합을 결과에 추가
+        if(current.size() >= 3 && current.size() <= 4) {
+            result.add(new ArrayList<>(current));
+        }
+
+        for (int i = idx; i < items.length; i++) {
+            // 현재 요소 추가
+            current.add(items[i]);
+
+            // 재귀 호출 (현재 요소 포함한 결과를 찾음)
+            allSubsets(items, i + 1, current, result);
+
+            // 백트래킹: 현재 요소 제거
+            current.remove(current.size() - 1);
         }
     }
 }
