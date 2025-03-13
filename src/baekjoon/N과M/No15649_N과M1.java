@@ -26,9 +26,11 @@ public class No15649_N과M1 {
         results = new ArrayList<>();
         combine(arr,M, 0,new ArrayList<>(), results);
         StringBuilder sb = new StringBuilder();
+
         for(List<Integer> result : results) {
             sb.append(result.toString().replace("[","").replace("]","").replace(",","")).append("\n");
         }
+
         System.out.println(sb);
     }
 
