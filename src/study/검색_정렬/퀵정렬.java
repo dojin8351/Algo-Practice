@@ -1,5 +1,7 @@
 package study.검색_정렬;
 
+import java.util.Arrays;
+
 public class 퀵정렬 {
 
     /*
@@ -18,6 +20,18 @@ public class 퀵정렬 {
         구현 방식
         - Hoare partition 방식을 사용한 퀵정렬
      */
+    public static void main(String[] args) {
+        // 테스트 배열
+        int[] arr = {8, 3, 1, 7, 0, 10, 2};
+
+        System.out.println("정렬 전 배열: " + Arrays.toString(arr));
+
+        // 퀵 정렬 호출 (low: 첫 번째 인덱스, high: 마지막 인덱스)
+        퀵정렬.quickSort(arr, 0, arr.length - 1);
+
+        // 정렬 결과 출력
+        System.out.println("정렬 후 배열: " + Arrays.toString(arr));
+    }
 
     // 배열의 특정 범위를 재귀적으로 정렬하는 함수
     public static void quickSort(int[] arr, int low, int high) {
@@ -46,55 +60,31 @@ public class 퀵정렬 {
 
     // 배열을 피벗을 기준으로 분할(Partition)하는 함수
     private static int partition(int[] arr, int low, int high) {
-        /*
-            `pivot`: 배열의 기준이 되는 값. 여기서는 배열의 마지막 요소를 피벗으로 선택.
-            - 피벗보다 작은 값은 왼쪽으로 이동.
-            - 피벗보다 큰 값은 오른쪽으로 이동.
-            - 마지막에 피벗은 자신의 정렬된 위치로 이동.
-        */
+        // 피벗: 배열의 마지막 요소를 기준 값으로 선택
         int pivot = arr[high];
 
-        /*
-            변수 `i`: 피벗보다 작은 값이 마지막으로 배치된 위치의 인덱스
-            - 초기값은 `low - 1`, 즉 아직 아무것도 배치되지 않았음을 의미.
-        */
+        // i: 피벗보다 작은 값이 배치될 위치의 인덱스 (초기값: low - 1)
         int i = low - 1;
 
-        /*
-            Partition 과정
-            - 배열의 low부터 high-1까지 반복하며
-              피벗보다 작거나 같은 값을 찾고, 작은 값은 `i`가 가리키는 위치로 이동.
-            - 피벗과 비교되면서 재정렬 수행.
-        */
+        // low부터 high - 1까지 요소를 순회하며 피벗과 비교
         for (int j = low; j < high; j++) {
-            /*
-                현재 요소(arr[j])가 피벗 값보다 작거나 같은 경우:
-                - `i`를 증가시킨 후, `arr[j]`와 `arr[i]`를 교환하여 작은 값을 올바른 위치로 이동.
-            */
+            // 현재 값이 피벗보다 작거나 같으면:
             if (arr[j] <= pivot) {
-                i++; // 작은 값의 끝 위치를 한 칸 확장
+                i++; // i를 증가시키고
 
-                // arr[i]와 arr[j] 스왑: 작은 값을 앞으로 이동
+                // i와 j 위치의 값을 교환 (더 작은 값을 앞으로 이동)
                 int temp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = temp;
             }
         }
 
-        /*
-            반복이 끝난 후, `i`는 피벗보다 작은 값의 마지막 인덱스를 가리킴.
-            - 피벗의 정렬된 위치는 i + 1.
-            - 피벗과 i + 1 위치의 값을 스왑하여 피벗을 '정렬된 위치'에 배치.
-        */
+        // 반복이 끝난 후, 피벗을 자신의 정렬된 위치로 이동
         int temp = arr[i + 1];
         arr[i + 1] = arr[high];
         arr[high] = temp;
 
-        /*
-            반환값
-            - 피벗 값의 최종 정렬된 위치 인덱스(i + 1)를 반환.
-            - 이 값을 기준으로 배열을 분할하여 재귀 호출을 진행.
-        */
+        // 피벗의 최종 위치(i + 1)를 반환
         return i + 1;
     }
 }
